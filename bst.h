@@ -123,6 +123,46 @@ private:
    class BNode;
    BNode * root;              // root node of the binary search tree
    size_t numElements;        // number of elements currently in the tree
+
+   void _assign(BNode * & pDest, const BNode* pSrc)
+   {
+      if (pSrc == nullptr)
+      {
+         _clear(pDest);
+         return;
+      }
+
+      if (pDest == nullptr)
+      {
+         pDest = new BNode(pSrc->data);       // V
+         _assign(pDest->pRight, pSrc->pRight); // R
+         _assign(pDest->pLeft, pSrc->pLeft);   // L
+      }
+      else
+      {
+         pDest->data = pSrc->data;            // V
+         _assign(pDest->pRight, pSrc->pRight); // R
+         _assign(pDest->pLeft, pSrc->pLeft);   // L
+      }
+
+      // Connect any newly assigned children to this one as a parent
+      if (pDest->pRight)
+         pDest->pRight->pParent = pDest;
+      if (pDest->pLeft)
+         pDest->pLeft->pParent = pDest;
+   }
+
+   void _clear(BNode * & pThis)
+   {
+      if (pThis == nullptr)
+         return;
+
+      _clear(pThis->pLeft);   // L
+      _clear(pThis->pRight);  // R
+      delete pThis;          // V
+      pThis = nullptr;
+   }
+
 };
 
 
@@ -138,9 +178,9 @@ public:
    // 
    // Construct
    //
-   BNode(): pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(0) { }
-    BNode(const T &  t) : pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(t) { }
-   BNode(T && t) : pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(std::move(t)) { }
+   BNode()              : pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(0) { }
+   BNode(const T &  t)  : pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(t) { }
+   BNode(T && t)        : pLeft(nullptr), pRight(nullptr), pParent(nullptr), data(std::move(t)) { }
 
    //
    // Insert
@@ -166,7 +206,11 @@ public:
    BNode* pRight;         // Right child - larger
    BNode* pParent;        // Parent
    bool isRed;              // Red-black balancing stuff
+
 };
+
+
+
 
 /**********************************************************
  * BINARY SEARCH TREE ITERATOR
@@ -248,19 +292,16 @@ private:
   * BST :: DEFAULT CONSTRUCTOR
   ********************************************/
 template <typename T>
-BST <T> ::BST(): root(new BNode), numElements(0) { }
+BST <T> ::BST(): root(nullptr), numElements(0) { }
 
 /*********************************************
  * BST :: COPY CONSTRUCTOR
  * Copy one tree to another
  ********************************************/
 template <typename T>
-BST <T> :: BST ( const BST<T>& rhs)
+BST <T> :: BST ( const BST<T>& rhs): root(nullptr), numElements(rhs.numElements)
 {
-    
-    root = rhs.root;
-    numElements = rhs.numElements;
-    *this = rhs;
+   *this = rhs;
 }
 
 /*********************************************
@@ -268,10 +309,11 @@ BST <T> :: BST ( const BST<T>& rhs)
  * Move one tree to another
  ********************************************/
 template <typename T>
-BST <T> :: BST(BST <T> && rhs) 
+BST <T> :: BST(BST <T> && rhs) : root(nullptr), numElements(0)
 {
-   numElements = 99;
-   root = new BNode;
+//   numElements = 99;
+//   root = new BNode;
+   *this = std::move(rhs);
 }
 
 /*********************************************
@@ -302,6 +344,7 @@ BST <T> :: ~BST()
 template <typename T>
 BST <T> & BST <T> :: operator = (const BST <T> & rhs)
 {
+   _assign(this->root, rhs.root);
    return *this;
 }
 
@@ -322,7 +365,10 @@ BST <T> & BST <T> :: operator = (const std::initializer_list<T>& il)
 template <typename T>
 BST <T> & BST <T> :: operator = (BST <T> && rhs)
 {
-    return *this;
+//   assignMove(rhs.root);
+   clear();
+   swap(rhs);
+   return *this;
 }
 
 /*********************************************
@@ -332,7 +378,8 @@ BST <T> & BST <T> :: operator = (BST <T> && rhs)
 template <typename T>
 void BST <T> :: swap (BST <T>& rhs)
 {
-    
+    std::swap(root, rhs.root);
+    std::swap(numElements, rhs.numElements);
 }
 
 /*****************************************************
@@ -370,7 +417,8 @@ typename BST <T> ::iterator BST <T> :: erase(iterator & it)
 template <typename T>
 void BST <T> ::clear() noexcept
 {
-
+   numElements = 0;
+   _clear(root);
 }
 
 /*****************************************************

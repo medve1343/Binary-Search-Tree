@@ -37,9 +37,9 @@ public:
       test_construct_default();
       test_constructCopy_empty();
       test_constructCopy_one();
-//      test_constructCopy_standard();
-//      test_constructMove_empty();
-//      test_constructMove_one();
+      test_constructCopy_standard();
+      test_constructMove_empty();
+      test_constructMove_one();
 //      test_constructMove_standard();
 //      test_constructInitializer_empty();
 //      test_constructInitializer_standard();
@@ -639,7 +639,7 @@ public:
       // exercise
       bstDest = bstSrc;
       // verify
-      assertUnit(Spy::numAssign() == 1);      // assign   [50] onto [99]
+      assertUnit(Spy::numAssign() == 1);      // _assign   [50] onto [99]
       assertUnit(Spy::numCopy() == 6);        // copy     [20][30][40]    [60][70][80]
       assertUnit(Spy::numAlloc() == 6);       // allocate [20][30][40]    [60][70][80]
       assertUnit(Spy::numDestructor() == 0);
@@ -687,7 +687,7 @@ public:
       // exercise
       bstDest = bstSrc;
       // verify
-      assertUnit(Spy::numAssign() == 1);      // assign   [99] onto [0]
+      assertUnit(Spy::numAssign() == 1);      // _assign   [99] onto [0]
       assertUnit(Spy::numDestructor() == 6);  // destroy  [20][30][40]    [60][70][80]
       assertUnit(Spy::numDelete() == 6);      // delete   [20][30][40]    [60][70][80]
       assertUnit(Spy::numCopy() == 0);
@@ -743,7 +743,7 @@ public:
       // exercise
       bstDest = bstSrc;
       // verify
-      assertUnit(Spy::numAssign() == 7);      // assign [2][30][40][50][60][70][80]
+      assertUnit(Spy::numAssign() == 7);      // _assign [2][30][40][50][60][70][80]
       assertUnit(Spy::numDestructor() == 0);
       assertUnit(Spy::numDelete() == 0);    
       assertUnit(Spy::numCopy() == 0);
@@ -990,7 +990,7 @@ public:
       teardownStandardFixture(bstDest);
    }
 
-   // assign with an empty initializer list.
+   // _assign with an empty initializer list.
    void test_assignInitializer_standardToEmpty()
    {  // setup
       std::initializer_list<Spy> ilSrc;
@@ -1611,7 +1611,7 @@ public:
       // exercise
       s = *it;
       // verify
-      assertUnit(Spy::numAssign() == 1);      // assign the results to s
+      assertUnit(Spy::numAssign() == 1);      // _assign the results to s
       assertUnit(Spy::numLessthan() == 0);    // does not look at any element
       assertUnit(Spy::numEquals() == 0);      // does not look at any element
       assertUnit(Spy::numDestructor() == 0);
@@ -2028,7 +2028,7 @@ public:
       auto pairBST = bst.insert(std::move(s));
       // verify
       assertUnit(Spy::numLessthan() == 1);    // compare [50]
-      assertUnit(Spy::numCopyMove() == 1);    // assign move [60]
+      assertUnit(Spy::numCopyMove() == 1);    // _assign move [60]
       assertUnit(Spy::numAssignMove() == 0);
       assertUnit(Spy::numCopy() == 0);
       assertUnit(Spy::numAlloc() == 0);
@@ -2087,7 +2087,7 @@ public:
       auto pairBST = bst.insert(std::move(s));
       // verify
       assertUnit(Spy::numLessthan() == 1);    // compare [50]
-      assertUnit(Spy::numCopyMove() == 1);    // assign move [40]
+      assertUnit(Spy::numCopyMove() == 1);    // _assign move [40]
       assertUnit(Spy::numAssignMove() == 0);
       assertUnit(Spy::numCopy() == 0);
       assertUnit(Spy::numAlloc() == 0);   
@@ -2150,7 +2150,7 @@ public:
       auto pairBST = bst.insert(std::move(s), false /* keepUnique */);
       // verify
       assertUnit(Spy::numLessthan() == 1);    // compare [50]
-      assertUnit(Spy::numCopyMove() == 1);    // assign move [50]
+      assertUnit(Spy::numCopyMove() == 1);    // _assign move [50]
       assertUnit(Spy::numAssignMove() == 0);
       assertUnit(Spy::numCopy() == 0);
       assertUnit(Spy::numAlloc() == 0);
@@ -2511,7 +2511,7 @@ public:
       p30->pParent = p70->pParent = p50;
       p60->pParent = p80->pParent = p70;
 
-      // now assign everything to the bst
+      // now _assign everything to the bst
       bst.root = p50;
       bst.numElements = 7;
    }
