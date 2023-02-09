@@ -40,7 +40,7 @@ public:
       test_constructCopy_standard();
       test_constructMove_empty();
       test_constructMove_one();
-//      test_constructMove_standard();
+      test_constructMove_standard();
 //      test_constructInitializer_empty();
 //      test_constructInitializer_standard();
 //
@@ -98,8 +98,8 @@ public:
 //      test_erase_noChildren();
 //      test_erase_oneChild();
 //      test_erase_twoChildren();
-//      test_clear_empty();
-//      test_clear_standard();
+      test_clear_empty();
+      test_clear_standard();
 
       // Status
 //      test_empty_empty();
