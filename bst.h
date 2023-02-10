@@ -14,7 +14,7 @@
  *        BST                 : A class that represents a binary search tree
  *        BST::iterator       : An iterator through BST
  * Author
- *    <your names here>
+ *    Joel Jossie and Gergo Medveczky
  ************************************************************************/
 
 #pragma once
@@ -114,8 +114,8 @@ public:
    // Status
    //
 
-   bool   empty() const noexcept { return true; }
-   size_t size()  const noexcept { return 99;   }
+   bool   empty() const noexcept { return (numElements == 0); }
+   size_t size()  const noexcept { return numElements; }
    
 
 private:

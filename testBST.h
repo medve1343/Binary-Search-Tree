@@ -102,10 +102,10 @@ public:
       test_clear_standard();
 
       // Status
-//      test_empty_empty();
-//      test_empty_standard();
-//      test_size_empty();
-//      test_size_standard();
+      test_empty_empty();
+      test_empty_standard();
+      test_size_empty();
+      test_size_standard();
 
       report("BST");
    }
