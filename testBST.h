@@ -77,12 +77,12 @@ public:
       test_iterator_dereference_standardRead();
 
       // Find
-//      test_find_empty();
-//      test_find_standardBegin();
-//      test_find_standardLast();
-//      test_find_standardMissing();
-
-      // Insert
+      test_find_empty();
+      test_find_standardBegin();
+      test_find_standardLast();
+      test_find_standardMissing();
+//
+//      // Insert
 //      test_insert_oneLeft();
 //      test_insert_oneRight();
 //      test_insert_duplicate();
@@ -91,7 +91,7 @@ public:
 //      test_insertMove_oneRight();
 //      test_insertMove_duplicate();
 //      test_insertMove_keepUnique();
-
+//
 //      // Remove
 //      test_erase_empty();
 //      test_erase_standardMissing();
