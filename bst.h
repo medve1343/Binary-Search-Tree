@@ -230,14 +230,16 @@ class BST <T> :: iterator
    friend class set; 
 public:
    // constructors and assignment
-   iterator(BNode * p = nullptr)          
-   { 
+   iterator(BNode * p = nullptr): pNode(p)
+   {
    }
    iterator(const iterator & rhs)         
-   { 
+   {
+      this->pNode = rhs.pNode;
    }
    iterator & operator = (const iterator & rhs)
    {
+      this->pNode = rhs.pNode;
       return *this;
    }
 
@@ -254,7 +256,7 @@ public:
    // de-reference. Cannot change because it will invalidate the BST
    const T & operator * () const 
    {
-      return *(new T);
+      return pNode->data;
    }
 
    // increment and decrement
@@ -428,7 +430,17 @@ void BST <T> ::clear() noexcept
 template <typename T>
 typename BST <T> :: iterator custom :: BST <T> :: begin() const noexcept
 {
-   return end();
+   
+   if(empty())
+   {
+      return end();
+   }
+   auto p = root;
+   while(p->pLeft)
+   {
+      p = p->pLeft;
+   }
+   return iterator(p);
 }
 
 
@@ -527,7 +539,34 @@ void BST <T> ::BNode::addRight(T && t)
 template <typename T>
 typename BST <T> :: iterator & BST <T> :: iterator :: operator ++ ()
 {
-   return *this;  
+   if(pNode == nullptr)
+   {
+      return *this;
+   }
+   if(pNode->pRight)
+   {
+      pNode = pNode->pRight;
+      while(pNode->pLeft)
+      {
+         pNode = pNode->pLeft;
+      }
+      return *this;
+   }
+   if(pNode->pRight == nullptr && pNode->pParent->pLeft == pNode)
+   {
+      pNode = pNode->pParent;
+      return *this;
+   }
+   if(pNode->pRight == nullptr && pNode->pParent->pRight == pNode)
+   {
+      while(pNode->pParent && pNode->pParent->pRight == pNode)
+      {
+         pNode = pNode->pParent;
+      }
+      pNode = pNode->pParent;
+      return *this;
+   }
+   return *this;
 }
 
 /**************************************************
