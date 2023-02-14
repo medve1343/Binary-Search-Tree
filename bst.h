@@ -134,13 +134,13 @@ private:
 
       if (pDest == nullptr)
       {
-         pDest = new BNode(pSrc->data);       // V
+         pDest = new BNode(pSrc->data);        // V
          _assign(pDest->pRight, pSrc->pRight); // R
          _assign(pDest->pLeft, pSrc->pLeft);   // L
       }
       else
       {
-         pDest->data = pSrc->data;            // V
+         pDest->data = pSrc->data;             // V
          _assign(pDest->pRight, pSrc->pRight); // R
          _assign(pDest->pLeft, pSrc->pLeft);   // L
       }
@@ -202,9 +202,9 @@ public:
    // Data
    //
    T data;                  // Actual data stored in the BNode
-   BNode* pLeft;          // Left child - smaller
-   BNode* pRight;         // Right child - larger
-   BNode* pParent;        // Parent
+   BNode* pLeft;            // Left child - smaller
+   BNode* pRight;           // Right child - larger
+   BNode* pParent;          // Parent
    bool isRed;              // Red-black balancing stuff
 
 };
@@ -347,6 +347,7 @@ template <typename T>
 BST <T> & BST <T> :: operator = (const BST <T> & rhs)
 {
    _assign(this->root, rhs.root);
+   numElements = rhs.numElements;
    return *this;
 }
 
@@ -357,6 +358,9 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs)
 template <typename T>
 BST <T> & BST <T> :: operator = (const std::initializer_list<T>& il)
 {
+   for (auto item : il) {
+      insert(item);
+   }
    return *this;
 }
 
@@ -367,7 +371,6 @@ BST <T> & BST <T> :: operator = (const std::initializer_list<T>& il)
 template <typename T>
 BST <T> & BST <T> :: operator = (BST <T> && rhs)
 {
-//   assignMove(rhs.root);
    clear();
    swap(rhs);
    return *this;
