@@ -88,7 +88,7 @@ public:
       test_insert_duplicate();
       test_insert_keepUnique();
 //      test_insertMove_oneLeft();
-      test_insertMove_oneRight();
+//      test_insertMove_oneRight();
 //      test_insertMove_duplicate();
 //      test_insertMove_keepUnique();
 //

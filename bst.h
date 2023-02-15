@@ -253,8 +253,8 @@ public:
    // 
    // Status
    //
-   bool isRightChild(BNode * pNode) const { return (pParent->pRight == this); } // TODO
-   bool isLeftChild( BNode * pNode) const { return (pParent->pLeft == this); }  // TODO
+   bool isRightChild() const { return (pParent && pParent->pRight == this); }
+   bool isLeftChild()  const { return (pParent && pParent->pLeft == this); }
 
    //
    // Data
@@ -479,12 +479,16 @@ typename BST <T> ::iterator BST <T> :: erase(iterator & it)
    // Case 1: No Children
    if(!it.pNode->pRight && !it.pNode->pLeft)
    {
-      delete it.pNode->pParent->pLeft;
-      it.pNode->pParent->pLeft = nullptr;
+      if (it.pNode->isRightChild())
+         it.pNode->pParent->pRight = nullptr;
+      else if (it.pNode->isLeftChild())
+         it.pNode->pParent->pLeft = nullptr;
+
+      delete it.pNode;
    }
 
    // Case 2a: One Left Child
-   if(!it.pNode->pRight && it.pNode->pLeft)
+   else if(!it.pNode->pRight && it.pNode->pLeft)
    {
       it.pNode->pLeft->pParent = it.pNode->pParent;
       if(it.pNode->pParent->pRight->data == it.pNode->data)
@@ -498,7 +502,7 @@ typename BST <T> ::iterator BST <T> :: erase(iterator & it)
    }
 
    // Case 2b: One Right Child
-   if(!it.pNode->pLeft && it.pNode->pRight)
+   else if(!it.pNode->pLeft && it.pNode->pRight)
    {
 
       it.pNode->pRight->pParent = it.pNode->pParent;
@@ -513,7 +517,7 @@ typename BST <T> ::iterator BST <T> :: erase(iterator & it)
    }
 
    // Case 3: Two Children
-   if(it.pNode->pLeft && it.pNode->pRight)
+   else if(it.pNode->pLeft && it.pNode->pRight)
    {
       auto itInOrderSuccessor = it.pNode->pRight;
       while(itInOrderSuccessor->pLeft != nullptr)
