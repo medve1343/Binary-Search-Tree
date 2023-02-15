@@ -93,11 +93,11 @@ public:
 //      test_insertMove_keepUnique();
 //
 //      // Remove
-//      test_erase_empty();
-//      test_erase_standardMissing();
-//      test_erase_noChildren();
-//      test_erase_oneChild();
-//      test_erase_twoChildren();
+      test_erase_empty();
+      test_erase_standardMissing();
+      test_erase_noChildren();
+      test_erase_oneChild();
+      test_erase_twoChildren();
       test_clear_empty();
       test_clear_standard();
 
@@ -2320,6 +2320,8 @@ public:
       // exercise
       auto itReturn = bst.erase(it);
       // verify
+       //std::cout << Spy::numDestructor() << "numDEs" << Spy::numDelete() << "numDEL" << Spy::numEquals() << "numEQ" << bst.numElements << "numELEM" << std::endl;
+       //std::cout << Spy::numEquals() << "NUMEQUALS" << std::endl;
       assertUnit(Spy::numDestructor() == 1);  // destroy [60]
       assertUnit(Spy::numDelete() == 1);      // delete [60]
       assertUnit(Spy::numLessthan() == 0);
@@ -2437,6 +2439,7 @@ public:
       auto it = custom::BST <int> ::iterator(p20);
       // exercise
       auto itReturn = bst.erase(it);
+       
       // verify
       //                 70
       //          +-------+-------+
