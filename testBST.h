@@ -2445,12 +2445,6 @@ public:
       //            +--+--+
       //           40    60
       assertUnit(itReturn == custom::BST <int> ::iterator(p30));
-//       std::cout << bst.numElements << "numElem" << std::endl;
-       std::cout << bst.root->data << "Root" << std::endl;
-       std::cout << p70->pLeft->data << " - 30 - Root Left" << std::endl;
-       std::cout << p70->pRight->data << " - 80" << std::endl;
-       std::cout << p70->pLeft->pRight->data << " Root->pLeft->pRight" << std::endl;
-       std::cout << p70->pLeft->pRight->pLeft->data << " Root->pLeft->pRight->pLeft" << std::endl;
       assertUnit(bst.root == p70);
       assertUnit(bst.numElements == 7);
       assertUnit(p70->pLeft == p30);
