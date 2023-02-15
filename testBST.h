@@ -81,14 +81,14 @@ public:
       test_find_standardBegin();
       test_find_standardLast();
       test_find_standardMissing();
-//
-//      // Insert
-//      test_insert_oneLeft();
-//      test_insert_oneRight();
-//      test_insert_duplicate();
-//      test_insert_keepUnique();
+
+      // Insert
+      test_insert_oneLeft();
+      test_insert_oneRight();
+      test_insert_duplicate();
+      test_insert_keepUnique();
 //      test_insertMove_oneLeft();
-//      test_insertMove_oneRight();
+      test_insertMove_oneRight();
 //      test_insertMove_duplicate();
 //      test_insertMove_keepUnique();
 //
@@ -1973,7 +1973,7 @@ public:
       //          +-------+-------+
       //         30              70  
       //     +----+----+     +----+----+
-      //    20        40    60        80  
+      //    20        40    60        80
       custom::BST <Spy> bst;
       setupStandardFixture(bst);
       Spy s(40);
@@ -2027,6 +2027,10 @@ public:
       // exercise
       auto pairBST = bst.insert(std::move(s));
       // verify
+      std::cout << "copyMove: " << Spy::numCopyMove() << std::endl;
+      std::cout << "copy:   " << Spy::numCopy() << std::endl;
+      std::cout << "alloc:   " << Spy::numAlloc() << std::endl;
+
       assertUnit(Spy::numLessthan() == 1);    // compare [50]
       assertUnit(Spy::numCopyMove() == 1);    // _assign move [60]
       assertUnit(Spy::numAssignMove() == 0);
