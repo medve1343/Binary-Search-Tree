@@ -96,8 +96,8 @@ public:
       test_erase_empty();
       test_erase_standardMissing();
       test_erase_noChildren();
-//      test_erase_oneChild();
-//      test_erase_twoChildren();
+      test_erase_oneChild();
+      test_erase_twoChildren();
       test_clear_empty();
       test_clear_standard();
 
@@ -2317,6 +2317,7 @@ public:
       auto itReturn = bst.erase(it);
       // verify
        //std::cout << Spy::numDestructor() << "numDEs" << Spy::numDelete() << "numDEL" << Spy::numEquals() << "numEQ" << bst.numElements << "numELEM" << std::endl;
+       //std::cout << Spy::numEquals() << "NUMEQUALS" << std::endl;
       assertUnit(Spy::numDestructor() == 1);  // destroy [60]
       assertUnit(Spy::numDelete() == 1);      // delete [60]
       assertUnit(Spy::numLessthan() == 0);
@@ -2434,6 +2435,7 @@ public:
       auto it = custom::BST <int> ::iterator(p20);
       // exercise
       auto itReturn = bst.erase(it);
+       
       // verify
       //                 70
       //          +-------+-------+
@@ -2443,6 +2445,12 @@ public:
       //            +--+--+
       //           40    60
       assertUnit(itReturn == custom::BST <int> ::iterator(p30));
+//       std::cout << bst.numElements << "numElem" << std::endl;
+       std::cout << bst.root->data << "Root" << std::endl;
+       std::cout << p70->pLeft->data << " - 30 - Root Left" << std::endl;
+       std::cout << p70->pRight->data << " - 80" << std::endl;
+       std::cout << p70->pLeft->pRight->data << " Root->pLeft->pRight" << std::endl;
+       std::cout << p70->pLeft->pRight->pLeft->data << " Root->pLeft->pRight->pLeft" << std::endl;
       assertUnit(bst.root == p70);
       assertUnit(bst.numElements == 7);
       assertUnit(p70->pLeft == p30);

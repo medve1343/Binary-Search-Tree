@@ -30,7 +30,7 @@
 #include <memory>     // for std::allocator
 #include <functional> // for std::less
 #include <utility>    // for std::pair
-
+#include <iostream>
 class TestBST; // forward declaration for unit tests
 class TestMap;
 class TestSet;
@@ -415,49 +415,59 @@ typename BST <T> ::iterator BST <T> :: erase(iterator & it)
 {
    if(it.pNode != nullptr && it.pNode->pRight == nullptr &&  it.pNode->pLeft == nullptr)
    {
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pRight->data == it.pNode->data)
-      {
-         //delete it.pNode->pParent->pRight->data;
-         it.pNode->pParent->pRight = nullptr;
-      }
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pLeft->data == it.pNode->data)
-      {
-         it.pNode->pParent->pLeft = nullptr;
-      }
+      delete it.pNode->pParent->pLeft;
+      it.pNode->pParent->pLeft = nullptr;
+      numElements--;
    }
-   
-   else if(it.pNode != nullptr && it.pNode->pRight == nullptr && it.pNode->pLeft != nullptr)
+
+   if(it.pNode != nullptr && it.pNode->pRight == nullptr && it.pNode->pLeft != nullptr)
    {
       it.pNode->pLeft->pParent = it.pNode->pParent;
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pRight->data == it.pNode->data)
+      if(it.pNode->pParent->pRight->data == it.pNode->data)
       {
          it.pNode->pRight = it.pNode->pLeft;
       }
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pLeft->data == it.pNode->data)
+      if(it.pNode->pParent->pLeft->data == it.pNode->data)
       {
          it.pNode->pParent->pLeft = it.pNode->pLeft;
       }
-      
+      numElements--;
    }
    
-   else if(it.pNode != nullptr && it.pNode->pLeft == nullptr && it.pNode->pRight != nullptr)
+   if(it.pNode != nullptr && it.pNode->pLeft == nullptr && it.pNode->pRight != nullptr)
    {
+      
       it.pNode->pRight->pParent = it.pNode->pParent;
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pRight->data == it.pNode->data)
+      if(it.pNode->pParent->pRight->data == it.pNode->data)
       {
          it.pNode->pParent->pRight = it.pNode->pRight;
       }
-      if(it.pNode->pParent != nullptr && it.pNode->pParent->pLeft->data == it.pNode->data)
+      if(it.pNode->pParent->pLeft->data == it.pNode->data)
       {
          it.pNode->pParent->pLeft = it.pNode->pRight;
       }
-      
+      numElements--;
    }
    
+   if(it.pNode != nullptr && it.pNode->pLeft != nullptr && it.pNode->pRight != nullptr)
+   {
+//      std::cout << "YOLOO" << std::endl;
+      auto temp = it.pNode->pRight;
+      while(temp->pLeft != nullptr)
+      {
+         temp = temp->pLeft;
+         std::cout<< "Yolloo" << std::endl;
+      }
+      it.pNode->data = temp->data;
+//      temp->pRight = it.pNode->pRight;
+//      temp->pParent = it.pNode->pParent;
+//      it.pNode = temp;
+      
+      
+      numElements--;
+   }
    
-   
-   
-   return end();
+   return it;
 }
 
 /*****************************************************
@@ -514,7 +524,6 @@ typename BST <T> :: iterator BST<T> :: find(const T & t)
       {
          p = p->pRight;
       }
-      
    }
    return end();
 }
