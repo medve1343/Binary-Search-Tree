@@ -379,11 +379,10 @@ BST <T> :: BST(BST <T> && rhs) : root(nullptr), numElements(0)
  * Create a BST from an initializer list
  ********************************************/
 template <typename T>
-BST <T> ::BST(const std::initializer_list<T>& il)
+BST <T> ::BST(const std::initializer_list<T>& il) : root(nullptr), numElements(0)
 {
-   for (auto element : il)
+   for (auto & element : il)
       insert(element);
-
 }
 
 /*********************************************
@@ -415,7 +414,8 @@ BST <T> & BST <T> :: operator = (const BST <T> & rhs)
 template <typename T>
 BST <T> & BST <T> :: operator = (const std::initializer_list<T>& il)
 {
-   for (auto item : il) {
+   clear();
+   for (auto & item : il) {
       insert(item);
    }
    return *this;
@@ -451,10 +451,20 @@ void BST <T> :: swap (BST <T>& rhs)
 template <typename T>
 std::pair<typename BST <T> :: iterator, bool> BST <T> :: insert(const T & t, bool keepUnique)
 {
-   auto result = _insert(root, t, keepUnique);
-   if (result.second) // If we inserted a new node, increment numElements
-      numElements++;
-   return result;
+   if (root)
+   {
+      auto result = _insert(root, t, keepUnique);
+      if (result.second) // If we inserted a new node, increment numElements
+         numElements++;
+      return result;
+
+   }
+   else // In case the tree is empty
+   {
+      root = new BNode(t);
+      numElements = 1;
+      return {iterator(root), true};
+   }
 }
 
 template <typename T>
